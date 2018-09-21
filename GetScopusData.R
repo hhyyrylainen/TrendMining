@@ -21,6 +21,7 @@ source("FunctionsScopusApi.R")
 query_string = "Continuous Integration"
 my_filename = "ci"
 
+set_api_key(sc_api_key)
 
 
 #later you may want to make this function. 
@@ -30,7 +31,8 @@ my_filename = "ci"
   my_query_string = "TITLE-ABS-KEY(\""
   my_query_string = paste(my_query_string, query_string, sep="")
   #EDIT this line
-  my_query_string = paste(my_query_string, "\") AND ALL('software testing')", sep="")
+my_query_string = paste(my_query_string, "\")  AND ALL(\"testing\") AND ( SUBJAREA (\"COMP\") OR SUBJAREA(\"ENGI\"))", sep="")
+# 
   
   #Get articles and save those - we do not want to re-run the query
   my_articles = get_scopus_papers(my_query_string)

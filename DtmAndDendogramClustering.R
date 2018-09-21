@@ -1,7 +1,7 @@
-#install.packages("ggplot2", dependencies = TRUE)
-#install.packages("tm", dependencies = TRUE)
-#install.packages("magrittr", dependencies = TRUE)
-#install.packages("stopwords", dependencies = TRUE)
+## install.packages("ggplot2", dependencies = TRUE)
+## install.packages("tm", dependencies = TRUE)
+## install.packages("magrittr", dependencies = TRUE)
+## install.packages("stopwords", dependencies = TRUE)
 library("tm")
 library("stopwords")
 library("magrittr")
@@ -13,7 +13,7 @@ library("ggplot2")
 #May take a long time
 #May not be human readable (for large files)
 #EDIT this row
-my_file <- "my_Scopus_TSE_articles_clean_data.RData"
+my_file <- "my_Scopus_ci_data.RData"
 #my_DtmAndDendogramClusterFile = function(my_file) {
 	
   print(paste("Dendogram Cluster, my_file: ", my_file))
@@ -26,7 +26,12 @@ my_file <- "my_Scopus_TSE_articles_clean_data.RData"
   #various stopword lists can be used https://cran.r-project.org/web/packages/stopwords/stopwords.pdf
   #stopword list is also context specific. Here you can do manual removals
 	#also automated methods tf/idf exist. EDIT
-	my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),"myStopword1", "myStopword2")
+my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),
+                 "software", "testing", "test", "continuous",
+                 "integration", "development", "paper", "using",
+                 "used", "use", "systems", "system", "also", "can",
+                 "study", "data", "based", "two", "well", "one",
+                 "open", "new", "need", "large", "high")
 	
 	#A good is to remove more words that we do not care about 
 	Abstract_clean = removeWords(my_articles$Abstract_clean, my_stopwords)
@@ -58,7 +63,7 @@ my_file <- "my_Scopus_TSE_articles_clean_data.RData"
 	#Convert to martix, compute colSums (total word counds), take only words with more than 500 occurecents, 
 	#and convert to dataframe with two columns: terms and frequencies 
 	#if too many or too little words showup EDIT number 500 accordingly
-	df <- dtm %>% as.matrix %>% colSums %>% subset (. >= 500) %>% data.frame(term=names(.), freq=.)
+	df <- dtm %>% as.matrix %>% colSums %>% subset (. >= 50) %>% data.frame(term=names(.), freq=.)
 	#do you see any new stopwords that could be added to the list
 	ggplot(df, aes(x = term, y = freq)) + geom_bar(stat = "identity") +xlab("Terms") + ylab("Count") + coord_flip()
 
@@ -83,7 +88,7 @@ my_file <- "my_Scopus_TSE_articles_clean_data.RData"
 	print(paste("Printing the Cluster Dendogram file:", my_pdf_file))
 	print("Finished Dendogram Cluster")
 	
-	pdf(my_pdf_file, width=40, height=15)
+	pdf(my_pdf_file, width=90, height=20)
 	par(cex=0.7, mar=c(5, 8, 4, 1))
 	#Remember we removed stopwords from title so the variable Title no longer make sense
 	plot(h, labels = my_articles$Title, sub = "")

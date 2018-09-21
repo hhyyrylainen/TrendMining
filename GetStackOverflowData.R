@@ -1,12 +1,12 @@
-#install.packages("httr", dependencies = TRUE)
-#install.packages("xml2", dependencies = TRUE)
+## install.packages("httr", dependencies = TRUE)
+## install.packages("xml2", dependencies = TRUE)
 
 
-#install.packages("urltools", dependencies = TRUE)
-#install.packages("jsonlite", dependencies = TRUE)
+## install.packages("urltools", dependencies = TRUE)
+## install.packages("jsonlite", dependencies = TRUE)
 
 
-#install.packages("anytime", dependencies = TRUE)
+## install.packages("anytime", dependencies = TRUE)
 
 source("FunctionsStackOverflowApi.R")
 
@@ -14,8 +14,8 @@ source("FunctionsStackOverflowApi.R")
 #my_filename = string to be used as a part of the filename
 
 #For example
-query_string = "robot framework"#2208 items works for demo
-my_filename = "robot_framework"
+query_string = "continuous integration"#2208 items works for demo
+my_filename = "continuous_integration"
 
 #get_stackOverFlowData = function(query_string, my_filename) {
 
