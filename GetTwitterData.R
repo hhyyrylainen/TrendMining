@@ -6,9 +6,12 @@ source("FunctionsTwitterApi.R")
 #query_string = string to be searched
 #my_filename = string to be used as a part of the filename
 
-#For example
-query_string = "#jenkins"
-my_filename = "jenkins"
+## For example
+## lot of junk with this
+## query_string = "#ci"
+##query_string = 
+##query_string = "#continuous_integration"
+my_filename = "ci"
 
 #get_TwitterData = function (query_string, my_filename) {
 
@@ -16,9 +19,15 @@ my_filename = "jenkins"
   #You may test duration like this. Then compute how long it would take to get max tweets
   #system.time(my_articles <- get_twitter_data(query_string, maxtweets=100))
   #system.time(my_articles <- get_twitter_data(query_string, maxtweets=200))
-  my_articles <- get_twitter_data(query_string, maxtweets=6000)
+my_articles <- get_twitter_data("#continuousintegration", maxtweets=6000)
+my_articles <- rbind(my_articles, get_twitter_data("#continuous_integration", maxtweets=6000))
+my_articles <- rbind(my_articles, get_twitter_data("#CI_CD", maxtweets=6000))
 
-  #save(my_articles, file="data/my_Twitter_articles_dirty.RData")
+save(my_articles, file="data/my_Twitter_articles_no_ci_dirty.RData")
+
+my_articles <- rbind(my_articles, get_twitter_data("#ci", maxtweets=1000))
+
+  save(my_articles, file="data/my_Twitter_articles_dirty.RData")
   if (is.factor(my_articles$Abstract))
     my_articles$Abstract = levels(my_articles$Abstract)[my_articles$Abstract]
   

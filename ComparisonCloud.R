@@ -1,13 +1,22 @@
-#install.packages("magrittr", dependencies = TRUE)
-#install.packages("tm", dependencies = TRUE)
-#install.packages("wordcloud", dependencies = TRUE)
+## install.packages("magrittr", dependencies = TRUE)
+## install.packages("tm", dependencies = TRUE)
+## install.packages("wordcloud", dependencies = TRUE)
 library(magrittr)
 library(tm)
 library(wordcloud)
 
-my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),"myStopword1", "myStopword2")
+my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),
+                 "software", "testing", "test", "continuous",
+                 "integration", "development", "paper", "using",
+                 "used", "use", "systems", "system", "also", "can",
+                 "study", "data", "based", "two", "well", "one",
+                 "open", "new", "need", "large", "high", "twitter", "com",
+                 "continuousintegration", "los", "octavio", "que", "dialogusci",
+                 "por", "via", "les", "karma")
 #EDIT this row
-my_file <- "my_Scopus_TSE_articles_clean_data.RData"
+##my_file <- "my_Scopus_ci_data.RData"
+##my_file <- "my_twitter_ci_data.RData"
+my_file <- "my_STO_continuous_integration_data.RData"
 #draw_ComparisonCloud = function(my_file){
 
   my_temp_file = paste(my_data_dir, "/", sep="")
@@ -35,11 +44,13 @@ my_file <- "my_Scopus_TSE_articles_clean_data.RData"
   #Here we split from the middle. We get two group one older and newer
   colnames(tdm) <- c (paste (">", as.character(median(my_articles_2$Date))), 
                   paste ("<=", as.character(median(my_articles_2$Date))))
-                         
+
+                                        # can help scale=c(2.6,0.2)
+png()
   comparison.cloud(tdm, max.words=50, rot.per=0, 
                    colors=brewer.pal(3,"Set1"),
                    title.size=1.5)
-
+dev.off()
   rm(my_articles_2)
   print("Finished comparison cloud")
 #}
@@ -82,7 +93,9 @@ my_file <- "my_Scopus_TSE_articles_clean_data.RData"
 
   colnames(tdm) <- c ("Q1 <= 0.25", "0.25 < Q2 <= 0.5", 
                       "0.5 < Q3 <= 0.75", "Q4 > 0.75")
-  comparison.cloud(tdm, max.words=50, rot.per=0, title.size=1.5, colors=brewer.pal(4,"Set1"))
+png()
+comparison.cloud(tdm, max.words=50, rot.per=0, title.size=1.5, colors=brewer.pal(4,"Set1"))
+dev.off()
   
   rm(my_articles)
   
