@@ -1,4 +1,6 @@
-my_file <- "my_Scopus_TSE_articles_clean_data.RData"
+##my_file <- "my_Scopus_ci_data.RData"
+my_file <- "my_STO_continuous_integration_data.RData"
+##my_file <- "my_twitter_ci_data.RData"
 
 #draw_myWordCloud = function(my_file){
 
@@ -45,11 +47,11 @@ summary(my_articles$Cites)
 
 #What does the result mean? 
 #Compare to fuel consumptio
-class(mtcars)
+#class(mtcars)
 #Convert mpg to liters per 100km
-mtcars$l100km <- (100*3.785411784)/(1.609344*mtcars$mpg)
-boxplot(l100km~cyl,data=mtcars, main="Car Milage Data",
-        xlab="Number of Cylinders", ylab="liters per 100km") 
+#mtcars$l100km <- (100*3.785411784)/(1.609344*mtcars$mpg)
+#boxplot(l100km~cyl,data=mtcars, main="Car Milage Data",
+#        xlab="Number of Cylinders", ylab="liters per 100km") 
 
 
 library(vioplot)
@@ -81,6 +83,7 @@ median(my_articles2$Cites[my_articles2$Date <= median(my_articles2$Date)])
 #Notice the minus sign descending order
 head(my_articles$Cites[order(-my_articles$Cites)], n=5)
 head(my_articles$Title[order(-my_articles$Cites)], n=5)
+head(my_articles$Abstract[order(-my_articles$Cites)], n=5)
 
 #This is optional just for kick analysis. Feel free to added to your report if you like. 
 #We can test more more things. Recently it was claimed that in econometrics that shorter articles get more citations. Lets see
