@@ -1,10 +1,10 @@
 library(lattice) 
 cold_and_hot_ts <- cbind (
-theta_mean_by_year_ts[, topics_cold [1:5]],
+theta_mean_by_year_ts[, topics_cold [1:2]],
 theta_mean_by_year_ts[, topics_hot [1:5]] , deparse.level =0)
 #colnames (cold_and_hot_ts) <-as.character(c(topics_cold [1:5], topics_hot[1:5]))
 
-colnames (cold_and_hot_ts) <-  as.character(c(unname(   Terms[1,topics_cold [1:5]]), unname(   Terms[1,topics_hot [1:5]])))
+colnames (cold_and_hot_ts) <-  as.character(c(unname(   Terms[1,topics_cold [1:2]]), unname(   Terms[1,topics_hot [1:5]])))
 
 
 

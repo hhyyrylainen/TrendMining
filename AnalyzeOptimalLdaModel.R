@@ -10,26 +10,27 @@ library("text2vec")
 library("nnet") #Breaks ties at random when searching for max
 
 
-my_file = "my_Scopus_TSE_articles_clean_data.RData"
+##my_file = "my_Scopus_ci_data.RData"
+##my_file = "my_STO_continuous_integration_data.RData"
+my_file = "my_twitter_ci_data.RData"
+
 #Articles. Make sure this is the same you used to build LDA model otherwise it will not make any sense
 my_temp_file = paste(my_data_dir, "/", sep="")
 my_temp_file = paste(my_temp_file, my_file, sep="")
 load(my_temp_file)
 
 #LDAWinner
-my_LDAWinner_file = paste(my_work_dir,  "/", sep="")
-my_LDAWinner_file = paste(my_LDAWinner_file, my_data_dir, sep="")
-my_LDAWinner_file = paste(my_LDAWinner_file, "/LDAModel.RData", sep="")
-my_doctopicdist_file = paste(my_work_dir,  "/", sep="")
-my_doctopicdist_file = paste(my_doctopicdist_file, my_data_dir, sep="")
-my_doctopicdist_file = paste(my_doctopicdist_file, "/LDADocTopicDist.RData", sep="")
+my_LDAWinner_file = my_data_dir
+my_LDAWinner_file = paste(my_LDAWinner_file, "LDAModel.RData", sep="")
+my_doctopicdist_file = my_data_dir
+my_doctopicdist_file = paste(my_doctopicdist_file, "LDADocTopicDist.RData", sep="")
 load(my_doctopicdist_file)
 load(my_LDAWinner_file)
 
 #Create important arrays with descriptive names
 #Documents to topics and get top 'n' terms for each topic
 Topics <- apply(doc_topic_distr, 1, function(x) which.is.max (x))
-Terms = lda_model$get_top_words(LDAWinner, 50)
+Terms = lda_model$get_top_words(50, lambda = 0.3)
 
 #Still in box......................................
 Titles = my_articles[,"Title"]
@@ -44,7 +45,7 @@ topics_n = lda_model$.__enclos_env__$private$n_topics
 #List top ten terms for all topics
 Terms[1:10,]
 #Study one topic (Replace by the optimal topics)
-Terms[1:10,topics_n]
+Terms[1:10,1]
 	
 #List all papers for topic 1
 my_articles$Title[Topics==1]
@@ -61,8 +62,10 @@ Terms[1:10,which.min(medians)]
 Titles[Topics==which.min(medians)]
 #abstract[Topics==which.min(medians)]
 
-#Density plots
+                                        #Density plots
+##png(width=900)
 qplot(as.numeric(Years), colour=factor(Topics),  geom="density")
+##dev.off()
 #Test Plot hot vs. cold
 qplot(as.numeric(subset(Years, Topics==which.max(medians) |  Topics==which.min(medians))), colour=factor(subset(Topics , Topics==which.max(medians) |  Topics==which.min(medians))),  geom="density")
 
@@ -105,13 +108,13 @@ theta = doc_topic_distr
 #**************************************************************
 #year_limiter = (Years > 1978 & Years < 2015)
 #year_limiter = (Years > 1980 & Years < 1990)
-year_limiter = Years >= 2007
-Years = Years[year_limiter]
+#year_limiter = Years >= 2000
+#Years = Years[year_limiter]
 years = levels(factor(unlist(Years)))
 
 
 #theta = posterior(LDAWinner)$topics
-theta = theta[year_limiter,]
+##theta = theta[year_limiter,]
 
 theta_mean_by_year_by = by(theta, (unlist(Years)), colMeans)
 theta_mean_by_year = do.call("rbind",theta_mean_by_year_by)
@@ -142,7 +145,7 @@ topics_cold = as.numeric(names(sort(theta_mean_lm_coef_slope[significance_neg[[1
 
 #EDIT the sourced file to get your trend lines inside the plot. 
 #Changing the *ylim* values controlling the y-scale should be enough. 
-source ("thesis_R/C16_trends-fig-five-hot-and-cold.R")
+#source ("thesis_R/C16_trends-fig-five-hot-and-cold.R")
 source ("thesis_R/C16_trends-fig-five-hot-and-cold-Adjusted.R")
 
 Terms[1:10,topics_hot [1:5]]

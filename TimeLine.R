@@ -37,8 +37,11 @@ plot (date, type ="l", xaxt="n", xlab="", ylab="")
 #-----------------------------------------------------------------------
 #Distribution of citations. Same techniques work for upvotes and retweets
 #Typically scientific articles show box-plots
-#Remove articles with no date 
-my_articles2 <- my_articles[which(!is.na(my_articles$Date)),]
+##Remove articles with no date
+## StackOverflow data has things with negative ratings
+my_articles2 <- my_articles[which(!is.na(my_articles$Date) & my_articles$Cites>=0),]
+
+
 
 boxplot(my_articles$Cites)
 #Summary offers more usefull view
@@ -58,7 +61,7 @@ library(vioplot)
 #Same info as in box plot but more illustrative
 vioplot(my_articles$Cites)
 
-my_articles2 <- my_articles[which(!is.na(my_articles$Date)),]
+##my_articles2 <- my_articles[which(!is.na(my_articles$Date)),]
 #Split from middle. Are old articles more cited than new?
 
 boxplot(my_articles2$Cites[my_articles2$Date > median(my_articles2$Date)],
@@ -101,6 +104,13 @@ summary(my_articles2$Cites[nchar(my_articles2$Title) <= median (nchar(my_article
 
 #Lets split four ways
 
+## Needed for StackOverflow data
+## q1_t <- my_articles2$Cites[nchar(my_articles2$Title) <= quantile(nchar(my_articles2$Title), probs = 0.25)]
+## q2_t <- my_articles2$Cites[nchar(my_articles2$Title)> quantile(nchar(my_articles2$Title), probs = 0.25) &
+##                             nchar(my_articles2$Title) <= quantile(nchar(my_articles2$Title), probs = 0.5)]
+## q3_t <- my_articles2$Cites[nchar(my_articles2$Title) > quantile(nchar(my_articles2$Title), probs = 0.5) &
+##                             nchar(my_articles2$Title) <= quantile(nchar(my_articles2$Title), probs = 0.75)]
+## q4_t <- my_articles2$Cites[nchar(my_articles2$Title) > quantile(nchar(my_articles2$Title), probs = 0.75)]
 q1_t <- my_articles$Cites[nchar(my_articles2$Title) <= quantile(nchar(my_articles2$Title), probs = 0.25)]
 q2_t <- my_articles$Cites[nchar(my_articles2$Title)> quantile(nchar(my_articles2$Title), probs = 0.25) &
                             nchar(my_articles2$Title) <= quantile(nchar(my_articles2$Title), probs = 0.5)]

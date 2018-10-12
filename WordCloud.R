@@ -25,16 +25,7 @@ my_file <- "my_STO_continuous_integration_data.RData"
   my_text <- paste(my_articles$Title, my_articles$Abstract_clean)
   my_text = tolower(my_text)
   
-  #remove more words that we do not care about 
-my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),
-                 "software", "testing", "test", "continuous",
-                 "integration", "development", "paper", "using",
-                 "used", "use", "systems", "system", "also", "can",
-                 "study", "data", "based", "two", "well", "one",
-                 "open", "new", "need", "large", "high", "twitter", "com",
-                 "continuousintegration", "los", "octavio", "que", "dialogusci",
-                 "por", "via", "les", "karma")
-  
+  #remove more words that we do not care about   
   
   my_text = removeWords(my_text, my_stopwords)
 

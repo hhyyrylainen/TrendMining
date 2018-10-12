@@ -5,14 +5,6 @@ library(magrittr)
 library(tm)
 library(wordcloud)
 
-my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),
-                 "software", "testing", "test", "continuous",
-                 "integration", "development", "paper", "using",
-                 "used", "use", "systems", "system", "also", "can",
-                 "study", "data", "based", "two", "well", "one",
-                 "open", "new", "need", "large", "high", "twitter", "com",
-                 "continuousintegration", "los", "octavio", "que", "dialogusci",
-                 "por", "via", "les", "karma")
 #EDIT this row
 ##my_file <- "my_Scopus_ci_data.RData"
 ##my_file <- "my_twitter_ci_data.RData"

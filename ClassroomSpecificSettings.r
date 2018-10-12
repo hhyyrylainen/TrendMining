@@ -64,3 +64,20 @@ so_api_key = "9raZ36FkYGFHDSNrW)gdsw(("
 tw_api_key = ""
 
 getoldtweets_path = paste(my_work_dir,"/GetOldTweets-java-master", sep="")
+
+
+## Stopwords are now here to only have them in one place
+my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),
+                 "software", "testing", "test", "tests", "ci", "continuous",
+                 "integration", "development", "paper", "using",
+                 "used", "use", "systems", "system", "also", "can",
+                 "study", "data", "based", "two", "well", "one",
+                 "open", "new", "need", "large", "high", "twitter", "com",
+                 "continuousintegration",
+                 # weird words from twitter
+                 "los", "octavio", "que", "dialogusci",
+                 "por", "via", "les", "karma",
+                 "çi", "de", "pic", "fi", "en", "la", "ai", "y", "v", "s", "el", "t",
+                 "k", "d", "le", "maricruz", "f", "l", "e", "un", "serenaysarikaya", "w",
+                 "cigars", "collagedeldia")
+

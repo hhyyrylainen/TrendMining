@@ -16,13 +16,14 @@ library("tokenizers")
 #source ("mclapply.hack.R")
 
 #Set the file to be analyzed, e.g.
-my_file = "my_Scopus_TSE_articles_clean_data.RData"
+##my_file = "my_Scopus_ci_data.RData"
+##my_file = "my_STO_continuous_integration_data.RData"
+my_file = "my_twitter_ci_data.RData"
 
 my_temp_file = paste(my_data_dir, "/", sep="")
 my_temp_file = paste(my_temp_file, my_file, sep="")
 load(my_temp_file)
 
-my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),"myStopword1", "myStopword2")
 
 #Articles with NA dates cause false analysis later kick them out
 my_articles <- my_articles[which(!is.na(my_articles$Date)),]
@@ -76,7 +77,10 @@ lda_model$get_top_words(n = 7, topic_number = c(1:10), lambda = 0.3)
 library(DEoptim)
 #Search space needs to be defined topics are between 10-500 and hyberparameters are between 0 and 1
 lower <- c(10, 0, 0)
-higher <- c(500, 1, 0.3)
+# on the lecture it was said that something like 70 papers per topic
+# would be optimal... we have only about 300 in scopus so I went a bit
+# lower and selected only 6 topics
+higher <- c(50, 1, 0.3)
 
 #here we start the search with 30 item population
 #reduce / increase itermax and NP if too slow or fast
@@ -86,23 +90,28 @@ DEoptim(optimalLda, lower, higher, DEoptim.control(strategy = 2, itermax = 10, N
 
 #lets apply the best input parameter and genera a model based on it. Then save it for further analysis (Analyze optimal model)--------------------
 
-#297.9555 0.2518732 0.005613016
 
+## Scopus best:
+## 175.01767 0.15867176 0.19826139
+## best with reasonable topic count: 4.875951 0.3005859 0.2228549
+
+## SO best (max was set to 50, so max categories wasn't used): 47.48204 0.3873905 0.038050673
+
+## Twitter best (max was also set to 50): 47.31436 0.07327469 0.1051913744
 tokens = my_articles$Clean_Text %>%  tokenize_words (strip_numeric = TRUE)
 it <- itoken(tokens, progressbar = FALSE)
 v = create_vocabulary(it) %>% prune_vocabulary(term_count_min = 10, doc_proportion_max = 0.3)
 vectorizer = vocab_vectorizer(v)
 dtm = create_dtm(it, vectorizer, type = "dgTMatrix")
-lda_model = LDA$new(n_topics = 298, doc_topic_prior = 0.2518732, topic_word_prior = 0.005613016)
+lda_model = LDA$new(n_topics = 48, doc_topic_prior = 0.07327469, topic_word_prior = 0.1051913744)
 doc_topic_distr = lda_model$fit_transform(x = dtm, n_iter = 1000, 
                                           convergence_tol = 0.001, n_check_convergence = 25, 
                                           #convergence_tol = 0.01, n_check_convergence = 25, 
                                           progressbar = FALSE, verbose=FALSE)
+
+
 #Save model for further analysis
-lda_file = getwd()
-lda_file = paste(lda_file, "/", sep="")
-lda_file = paste(lda_file, my_data_dir, sep="")
-lda_file = paste(lda_file, "/", sep="")
+lda_file = my_data_dir
 lda_file_doc_topic_dist = paste(lda_file, "LDADocTopicDist.RData", sep="")
 lda_file = paste(lda_file, "LDAModel.RData", sep="")
 
@@ -110,7 +119,7 @@ lda_file = paste(lda_file, "LDAModel.RData", sep="")
 save(lda_model, file=lda_file)
 save(doc_topic_distr, file=lda_file_doc_topic_dist)
 #sanasto?
-lda_model
+##lda_model
 
 #function------------------------------------------------------------
 optimalLda <- function (x){

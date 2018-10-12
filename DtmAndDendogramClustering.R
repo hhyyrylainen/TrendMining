@@ -26,12 +26,6 @@ my_file <- "my_Scopus_ci_data.RData"
   #various stopword lists can be used https://cran.r-project.org/web/packages/stopwords/stopwords.pdf
   #stopword list is also context specific. Here you can do manual removals
 	#also automated methods tf/idf exist. EDIT
-my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),
-                 "software", "testing", "test", "continuous",
-                 "integration", "development", "paper", "using",
-                 "used", "use", "systems", "system", "also", "can",
-                 "study", "data", "based", "two", "well", "one",
-                 "open", "new", "need", "large", "high")
 	
 	#A good is to remove more words that we do not care about 
 	Abstract_clean = removeWords(my_articles$Abstract_clean, my_stopwords)

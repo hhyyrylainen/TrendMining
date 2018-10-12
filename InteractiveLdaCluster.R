@@ -8,7 +8,9 @@ library(magrittr)
 library(LDAvis)
 
 #May take a while - wait patiently
-my_file = "my_Scopus_TSE_articles_clean_data.RData"
+##my_file = "my_Scopus_ci_data.RData"
+##my_file = "my_STO_continuous_integration_data.RData"
+my_file = "my_twitter_ci_data.RData"
 #draw_my_IAMap = function(my_file) {
   
   print(paste("Interactive LDA Cluster, my_file: ", my_file))
@@ -24,8 +26,6 @@ my_file = "my_Scopus_TSE_articles_clean_data.RData"
   my_tokens = my_text %>% tolower %>% word_tokenizer
   
   it = itoken(my_tokens)
-  
-  my_stopwords = c(stopwords::stopwords(language = "en", source = "snowball"),"myStopword1", "myStopword2")
   
   
   #Remove stopwords
