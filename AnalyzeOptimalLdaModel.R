@@ -19,6 +19,10 @@ my_temp_file = paste(my_data_dir, "/", sep="")
 my_temp_file = paste(my_temp_file, my_file, sep="")
 load(my_temp_file)
 
+##Articles with NA dates cause false analysis later kick them out
+my_articles <- my_articles[which(!is.na(my_articles$Date)),]
+
+
 #LDAWinner
 my_LDAWinner_file = my_data_dir
 my_LDAWinner_file = paste(my_LDAWinner_file, "LDAModel.RData", sep="")
@@ -63,9 +67,9 @@ Titles[Topics==which.min(medians)]
 #abstract[Topics==which.min(medians)]
 
                                         #Density plots
-##png(width=900)
+png(width=900)
 qplot(as.numeric(Years), colour=factor(Topics),  geom="density")
-##dev.off()
+dev.off()
 #Test Plot hot vs. cold
 qplot(as.numeric(subset(Years, Topics==which.max(medians) |  Topics==which.min(medians))), colour=factor(subset(Topics , Topics==which.max(medians) |  Topics==which.min(medians))),  geom="density")
 

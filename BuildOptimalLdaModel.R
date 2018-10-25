@@ -25,7 +25,7 @@ my_temp_file = paste(my_temp_file, my_file, sep="")
 load(my_temp_file)
 
 
-#Articles with NA dates cause false analysis later kick them out
+##Articles with NA dates cause false analysis later kick them out
 my_articles <- my_articles[which(!is.na(my_articles$Date)),]
 my_text <- paste (my_articles$Title, my_articles$Abstract_clean)
 
